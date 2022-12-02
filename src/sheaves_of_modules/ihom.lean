@@ -613,7 +613,6 @@ def ihom_obj : SHEAF_OF_MODULES X :=
   module_structure := SHEAF_OF_MODULES.monoidal.module_ihom_obj _ _,
   compatibility_bit := λ U V i r x, 
   begin 
-    -- have := Top.presheaf.monoidal.ihom_map_2,
     delta ihom_obj,
     ext W s, 
     dsimp only [smul_ihom_obj_def, smul_ihom_obj_app],
