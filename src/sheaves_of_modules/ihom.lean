@@ -1,6 +1,7 @@
-import algebra.category.Group.colimits
+import algebra.category.Group.limits
 import category_theory.preadditive.functor_category
 import topology.sheaves.sheaf
+import topology.sheaves.sheaf_condition.unique_gluing
 
 import sheaves_of_modules.defs
 
@@ -467,9 +468,11 @@ localized "infix (name := sheaf_restrict) `|_`:40 := Top.sheaf.sheaf_restrict" i
 
 namespace monoidal
 
+open opposite
+
 lemma ihom_obj_is_sheaf_of_is_sheaf {F G : Top.presheaf AddCommGroup.{u} X}
   (hF : is_sheaf F) (hG : is_sheaf G) : is_sheaf ⟦F, G⟧ :=
-sorry -- probably harder
+sorry
 
 open category_theory.grothendieck_topology
 
@@ -625,6 +628,16 @@ def ihom_obj : SHEAF_OF_MODULES X :=
     erw M2.compatibility_bit,
     rw [←comp_apply, ←X.presheaf.map_comp],
     refl,
+  end }
+
+def ihom_map (F G₁ G₂ : SHEAF_OF_MODULES X) (α : G₁ ⟶ G₂) :
+  ihom_obj F G₁ ⟶ ihom_obj F G₂ :=
+{ ab_sheaf := (Top.sheaf.monoidal.ihom F.ab_sheaf).map α.ab_sheaf,
+  map_smul := λ U r x, 
+  begin 
+    ext V s,
+    dsimp [Top.presheaf.monoidal.ihom_map', smul_ihom_obj_def],
+    rw [comp_apply, add_monoid_hom.smul_apply, comp_apply, ←α.map_smul],
   end }
 
 end monoidal
