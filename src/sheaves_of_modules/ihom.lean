@@ -630,7 +630,7 @@ def ihom_obj : SHEAF_OF_MODULES X :=
     refl,
   end }
 
-def ihom_map (F G₁ G₂ : SHEAF_OF_MODULES X) (α : G₁ ⟶ G₂) :
+@[simps] def ihom_map (F G₁ G₂ : SHEAF_OF_MODULES X) (α : G₁ ⟶ G₂) :
   ihom_obj F G₁ ⟶ ihom_obj F G₂ :=
 { ab_sheaf := (Top.sheaf.monoidal.ihom F.ab_sheaf).map α.ab_sheaf,
   map_smul := λ U r x, 
@@ -638,6 +638,21 @@ def ihom_map (F G₁ G₂ : SHEAF_OF_MODULES X) (α : G₁ ⟶ G₂) :
     ext V s,
     dsimp [Top.presheaf.monoidal.ihom_map', smul_ihom_obj_def],
     rw [comp_apply, add_monoid_hom.smul_apply, comp_apply, ←α.map_smul],
+  end }
+
+@[simps] def ihom (F : SHEAF_OF_MODULES X) : 
+  SHEAF_OF_MODULES X ⥤ SHEAF_OF_MODULES X :=
+{ obj := ihom_obj F,
+  map := ihom_map F,
+  map_id' := λ G, 
+  begin 
+    ext1,
+    exact (Top.sheaf.monoidal.ihom F.ab_sheaf).map_id _,
+  end,
+  map_comp' := λ G₀ G₁ G₂ α β, 
+  begin 
+    ext1,
+     exact (Top.sheaf.monoidal.ihom F.ab_sheaf).map_comp _ _,
   end }
 
 end monoidal
